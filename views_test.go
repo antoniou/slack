@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/nlopes/slack/internal/errorsx"
+	"github.com/antoniou/slack/internal/errorsx"
 )
 
 var dummySlackErr = errorsx.String("dummy_error_from_slack")
