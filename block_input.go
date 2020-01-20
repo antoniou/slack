@@ -10,11 +10,12 @@ const (
 )
 
 type InputBlock struct {
-	Type      MessageBlockType   `json:"type"`
-	Label     *TextBlockObject   `json:"label,omitempty"`
-	Element   *InputBlockElement `json:"element,omitempty"`
-	Text      string             `json:text`
-	Multiline bool               `json:multiline`
+	Type     MessageBlockType   `json:"type"`
+	Label    *TextBlockObject   `json:"label,omitempty"`
+	Element  *InputBlockElement `json:"element,omitempty"`
+	BlockID  string             `json:"block_id,omitempty"`
+	Hint     *TextBlockObject   `json:"hint,omitempty"`
+	Optional bool               `json:"multiline,omitempty"`
 }
 
 // BlockType returns the type of the block
@@ -22,11 +23,14 @@ func (i InputBlock) BlockType() MessageBlockType {
 	return i.Type
 }
 
-func NewInputBlock(text string, multiline bool) *InputBlock {
+func NewInputBlock(blockID string, label *TextBlockObject, element *InputBlockElement, hint *TextBlockObject, optional bool) *InputBlock {
 	return &InputBlock{
-		Type:      MBTInput,
-		Text:      text,
-		Multiline: multiline,
+		BlockID:  blockID,
+		Type:     MBTInput,
+		Label:    label,
+		Element:  element,
+		Hint:     hint,
+		Optional: optional,
 	}
 }
 
