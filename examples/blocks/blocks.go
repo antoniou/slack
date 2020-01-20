@@ -520,6 +520,8 @@ func unmarshalExample() {
 			respBlocks = append(respBlocks, block)
 		case slack.MBTDivider:
 			respBlocks = append(respBlocks, block)
+		case slack.MBTInput:
+			respBlocks = append(respBlocks, block)			
 		}
 	}
 
