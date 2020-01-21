@@ -37,20 +37,38 @@ func NewInputBlock(blockID string, label *TextBlockObject, element *InputBlockEl
 type InputBlockElementType string
 
 type InputBlockElement struct {
-	PlainTextInputElement   *PlainTextInputBlockElement
-	SelectInputElement      *SelectBlockElement
-	MultiSelectInputElement *MultiSelectBlockElement
-	DatePickerInputElement  *DatePickerBlockElement
+	PlainTextInputElement *PlainTextInputBlockElement
+	SelectElement         *SelectBlockElement
+	MultiSelectElement    *MultiSelectBlockElement
+	DatePickerElement     *DatePickerBlockElement
+}
+
+// NewAccessory returns a new Accessory for a given block element
+func NewInputBlockElement(element BlockElement) *InputBlockElement {
+	switch element.(type) {
+	case *PlainTextInputBlockElement:
+		return &InputBlockElement{PlainTextInputElement: element.(*PlainTextInputBlockElement)}
+	case *SelectBlockElement:
+		return &InputBlockElement{SelectElement: element.(*SelectBlockElement)}
+	case *DatePickerBlockElement:
+		return &InputBlockElement{DatePickerElement: element.(*DatePickerBlockElement)}
+	}
+
+	return nil
 }
 
 type PlainTextInputBlockElement struct {
-	Type         string `json:"type,omitempty"`
-	ActionID     string `json:"action_id,omitempty"`
-	Placeholder  string `json:"placeholder"`
-	InitialValue string `json:"initial_value,omitempty"`
-	Multiline    bool   `json:"multiline,omitempty"`
-	MinLength    int    `json:"min_length,omitempty"`
-	MaxLength    int    `json:"max_length,omitempty"`
+	Type         MessageElementType `json:"type,omitempty"`
+	ActionID     string             `json:"action_id,omitempty"`
+	Placeholder  string             `json:"placeholder"`
+	InitialValue string             `json:"initial_value,omitempty"`
+	Multiline    bool               `json:"multiline,omitempty"`
+	MinLength    int                `json:"min_length,omitempty"`
+	MaxLength    int                `json:"max_length,omitempty"`
+}
+
+func (s PlainTextInputBlockElement) ElementType() MessageElementType {
+	return s.Type
 }
 
 type MultiSelectBlockElement struct{}
