@@ -63,12 +63,24 @@ type PlainTextInputBlockElement struct {
 	Placeholder  string             `json:"placeholder"`
 	InitialValue string             `json:"initial_value,omitempty"`
 	Multiline    bool               `json:"multiline,omitempty"`
-	MinLength    int                `json:"min_length,omitempty"`
-	MaxLength    int                `json:"max_length,omitempty"`
+	MinLength    uint               `json:"min_length,omitempty"`
+	MaxLength    uint               `json:"max_length,omitempty"`
 }
 
 func (s PlainTextInputBlockElement) ElementType() MessageElementType {
 	return s.Type
+}
+
+func NewPlainTextInputBlockElement(actionID, placeholder, initialValue string, multiline bool, minLength, maxLength uint) *PlainTextInputBlockElement {
+	return &PlainTextInputBlockElement{
+		Type:         METPlainTextInput,
+		ActionID:     actionID,
+		Placeholder:  placeholder,
+		InitialValue: initialValue,
+		Multiline:    multiline,
+		MinLength:    minLength,
+		MaxLength:    maxLength,
+	}
 }
 
 type MultiSelectBlockElement struct{}
