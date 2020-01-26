@@ -1,5 +1,7 @@
 package slack
 
+import "encoding/json"
+
 // https://api.slack.com/reference/block-kit/blocks#input
 
 const (
@@ -43,6 +45,34 @@ type InputBlockElement struct {
 	DatePickerElement     *DatePickerBlockElement
 }
 
+// MarshalJSON implements the Marshaller interface for InputBlockElement so that any JSON
+// marshalling is delegated and proper type determination can be made before marshal
+func (i *InputBlockElement) MarshalJSON() ([]byte, error) {
+	bytes, err := json.Marshal(inputToBlockElement(i))
+	if err != nil {
+		return nil, err
+	}
+
+	return bytes, nil
+}
+
+func inputToBlockElement(element *InputBlockElement) BlockElement {
+	if element.PlainTextInputElement != nil {
+		return element.PlainTextInputElement
+	}
+	if element.SelectElement != nil {
+		return element.SelectElement
+	}
+	// if element.MultiSelectElement != nil {
+	// 	return element.MultiSelectElement
+	// }
+	if element.DatePickerElement != nil {
+		return element.DatePickerElement
+	}
+
+	return nil
+}
+
 // NewAccessory returns a new Accessory for a given block element
 func NewInputBlockElement(element BlockElement) *InputBlockElement {
 	switch element.(type) {
@@ -60,7 +90,7 @@ func NewInputBlockElement(element BlockElement) *InputBlockElement {
 type PlainTextInputBlockElement struct {
 	Type         MessageElementType `json:"type,omitempty"`
 	ActionID     string             `json:"action_id,omitempty"`
-	Placeholder  string             `json:"placeholder"`
+	Placeholder  *TextBlockObject   `json:"placeholder,omitempty"`
 	InitialValue string             `json:"initial_value,omitempty"`
 	Multiline    bool               `json:"multiline,omitempty"`
 	MinLength    uint               `json:"min_length,omitempty"`
@@ -71,7 +101,7 @@ func (s PlainTextInputBlockElement) ElementType() MessageElementType {
 	return s.Type
 }
 
-func NewPlainTextInputBlockElement(actionID, placeholder, initialValue string, multiline bool, minLength, maxLength uint) *PlainTextInputBlockElement {
+func NewPlainTextInputBlockElement(actionID string, placeholder *TextBlockObject, initialValue string, multiline bool, minLength, maxLength uint) *PlainTextInputBlockElement {
 	return &PlainTextInputBlockElement{
 		Type:         METPlainTextInput,
 		ActionID:     actionID,

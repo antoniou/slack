@@ -23,7 +23,7 @@ type View struct {
 	Blocks          Blocks           `json:"blocks"`
 	PrivateMetadata string           `json:"private_metadata"`
 	CallbackID      string           `json:"callback_id"`
-	State           interface{}      `json:"state"`
+	State           *ViewState       `json:"state"`
 	Hash            string           `json:"hash"`
 	ClearOnClose    bool             `json:"clear_on_close"`
 	NotifyOnClose   bool             `json:"notify_on_close"`
@@ -32,6 +32,10 @@ type View struct {
 	AppID           string           `json:"app_id"`
 	ExternalID      string           `json:"external_id"`
 	BotID           string           `json:"bot_id"`
+}
+
+type ViewState struct {
+	Values map[string]map[string]BlockAction `json:"values"`
 }
 
 type ModalViewRequest struct {

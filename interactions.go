@@ -44,6 +44,7 @@ type InteractionCallback struct {
 	MessageTs       string          `json:"message_ts"`
 	AttachmentID    string          `json:"attachment_id"`
 	ActionCallback  ActionCallbacks `json:"actions"`
+	View            View            `json:"view"`
 	DialogSubmissionCallback
 }
 
